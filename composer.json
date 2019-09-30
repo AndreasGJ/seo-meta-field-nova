@@ -1,6 +1,6 @@
 {
-    "name": "gwd/seo-meta",
-    "description": "A Laravel Nova field.",
+    "name": "agj/seo-meta-nova-field",
+    "description": "A Laravel Nova field which adds all SEO related meta fields to an Resource.",
     "keywords": [
         "laravel",
         "nova"
