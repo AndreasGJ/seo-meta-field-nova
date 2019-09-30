@@ -3,6 +3,7 @@
     "description": "A Laravel Nova field which adds all SEO related meta fields to an Resource.",
     "license": "MIT",
     "version": "1.0.0",
+    "type": "library",
     "authors": [
         {
             "name": "Andreas Gade Jensen",
@@ -30,5 +31,7 @@
     },
     "config": {
         "sort-packages": true
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
