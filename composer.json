@@ -2,7 +2,7 @@
     "name": "agj/seo-meta-nova-field",
     "description": "A Laravel Nova field which adds all SEO related meta fields to an Resource.",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "authors": [
         {
             "name": "Andreas Gade Jensen",
