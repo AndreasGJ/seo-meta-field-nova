@@ -16,7 +16,26 @@ class SeoMeta extends Field
      */
     public $component = 'seo-meta';
 
+    /**
+     * Title format
+     *
+     * @var string
+     */
     private $title_format = ':text';
+
+    /**
+     * Path for the SEO image
+     *
+     * @var string
+     */
+    private $file_path = '/';
+
+    /**
+     * Disk for the SEO image
+     *
+     * @var string
+     */
+    private $file_disk = 'public';
 
     /**
      * Create a new field.
@@ -35,6 +54,7 @@ class SeoMeta extends Field
             'title_format' => $this->title_format
         ]);
     }
+
     /**
      * Resolve the field's value.
      *
@@ -51,15 +71,60 @@ class SeoMeta extends Field
         }
     }
 
-    public function setupUrl($path = ''){
+    /**
+     * Set the url for given Model
+     *
+     * @param string $path Path to the view
+     *
+     * @return Field
+     */
+    public function setupUrl($path = '')
+    {
         return $this->withMeta(['url' => url($path)]);
     }
 
-    public function titleFormat($format = ':text'){
+    /**
+     * Syntax formatter for the SEO title.
+     *
+     * @param string $format Formatter for SEO title
+     *
+     * @return Field
+     */
+    public function titleFormat($format = ':text')
+    {
         $this->title_format = $format;
+
         return $this->withMeta([
             'title_format' => $format
         ]);
+    }
+
+    /**
+     * Set the storage disk for the SEO image
+     *
+     * @param string $disk Which disk to put the image
+     *
+     * @return Field
+     */
+    public function disk($disk = 'public')
+    {
+        $this->file_disk = $disk;
+
+        return $this;
+    }
+
+    /**
+     * Set the storage path for the SEO image
+     *
+     * @param string $path Path to put the image
+     *
+     * @return Field
+     */
+    public function path($path = '/')
+    {
+        $this->file_path = $path;
+
+        return $this;
     }
 
     /**
@@ -103,11 +168,12 @@ class SeoMeta extends Field
         if ($request->hasFile($file_attr) && $request->file($file_attr)->isValid()) {
             $image = $request->{$file_attr};
 
-            $path = $request->{$file_attr}->store('public');
+            // Save the SEO image
+            $path = $request->{$file_attr}->store($this->file_path, ['disk' => $this->file_disk]);
             if ($path) {
                 // Delete old file if any.
                 if ($relationship->image) {
-                    Storage::delete($relationship->image);
+                    Storage::disk($this->file_disk)->delete($relationship->image);
                 }
 
                 $relationship->image = $path;
