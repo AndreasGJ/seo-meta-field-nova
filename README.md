@@ -4,7 +4,7 @@ This custom nova field, can add SEO related fields to any Model through a morph 
 ## How to install
 To install the package run the install below:
 ```
-composer require agj/seo-meta-field-nova
+composer require gwd/seo-meta-nova-field
 ```
 
 And then run the migrations:
