@@ -144,6 +144,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
+    hasSeo: function hasSeo() {
+      var value = this.field.value;
+
+      if (value && value.title) {
+        return true;
+      }
+
+      return false;
+    },
     seoTitle: function seoTitle() {
       var value = this.field.value;
 
@@ -11435,11 +11444,9 @@ var render = function() {
         slot: "value"
       },
       [
-        !_vm.field.value
-          ? _c("b", [_vm._v("You need some SEO data")])
-          : _vm._e(),
+        !_vm.hasSeo ? _c("b", [_vm._v("You need some SEO data")]) : _vm._e(),
         _vm._v(" "),
-        _vm.field.value
+        _vm.hasSeo
           ? _c(
               "button",
               {
@@ -11460,7 +11467,7 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
-        _vm.showSeoPreviews && _vm.field.value
+        _vm.showSeoPreviews && _vm.hasSeo
           ? _c("div", { staticClass: "seo-meta-detail__previews" }, [
               _c("div", { staticClass: "seo-meta-detail__wrapper" }, [
                 _c("div", { staticClass: "seo-meta-detail__wrapper__label" }, [

@@ -1,9 +1,13 @@
 @php
-$seo = isset($page) && $page ? $page->getSeoMeta() : [
+$seo = isset($page) && $page && method_exists($page, 'getSeoMeta') ? $page->getSeoMeta() : [
     'title' => config('app.name', 'Laravel'),
     'description' => null,
     'keywords' => null
 ];
+if (isset($page) && $page && is_array($page) && isset($page['seo'])) {
+    $seo = array_merge($seo, $page['seo']);
+}
+
 if(!empty($seo['params'])){
     if(!empty($seo['params']->title_format)){
         $seo['title'] = str_replace(':text', $seo['title'], $seo['params']->title_format);

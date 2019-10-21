@@ -2,14 +2,14 @@
   <panel-item :field="field">
     {{ field.name }}
     <div slot="value" class="seo-meta-detail">
-      <b v-if="!field.value">You need some SEO data</b>
+      <b v-if="!hasSeo">You need some SEO data</b>
       <button
         type="button"
         class="btn btn-primary btn-default"
         @click="showSeoPreviews = !showSeoPreviews"
-        v-if="field.value"
+        v-if="hasSeo"
       >{{ showSeoPreviews ? 'Hide' : 'Show' }} SEO previews</button>
-      <div class="seo-meta-detail__previews" v-if="showSeoPreviews && field.value">
+      <div class="seo-meta-detail__previews" v-if="showSeoPreviews && hasSeo">
         <div class="seo-meta-detail__wrapper">
           <div class="seo-meta-detail__wrapper__label">Google</div>
           <div class="seo-meta-detail__wrapper__item seo-meta-detail__google">
@@ -48,6 +48,13 @@ export default {
     };
   },
   computed: {
+    hasSeo(){
+        const value = this.field.value;
+        if(value && value.title){
+            return true;
+        }
+        return false;
+    },
     seoTitle() {
       const value = this.field.value;
       if (value && value.title) {
