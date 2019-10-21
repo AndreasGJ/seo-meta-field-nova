@@ -49,7 +49,7 @@ class SeoMeta extends Field
     {
         parent::__construct($name, $attribute, $resolveCallback);
 
-        return $this->withMeta([
+        $this->withMeta([
             'hostname'     => url(''),
             'title_format' => $this->title_format
         ]);
