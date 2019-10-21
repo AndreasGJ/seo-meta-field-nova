@@ -32,8 +32,9 @@ trait SeoMetaTrait
             $title = $this->getSeoTitleDefault();
 
             if ($title) {
+                $formatter = $this->getSeoTitleFormatter() ?? ':text';
                 $attrs = [
-                    'title' => $title,
+                    'title' => str_replace(':text', $title, $formatter),
                     'description' => $this->getSeoDescriptionDefault(),
                     'keywords' => $this->getSeoKeywordsDefault(),
                     'image' => $this->getSeoImageDefault(),
@@ -47,6 +48,16 @@ trait SeoMetaTrait
         }
 
         return $attrs;
+    }
+
+    /**
+     * Get SEO title formatter
+     *
+     * @return
+     */
+    public function getSeoTitleFormatter()
+    {
+        return ':text';
     }
 
     /**

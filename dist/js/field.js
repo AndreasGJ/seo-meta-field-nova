@@ -154,11 +154,12 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     seoTitle: function seoTitle() {
-      var value = this.field.value;
+      var field = this.field;
+      var value = field.value;
 
       if (value && value.title) {
-        if (value.params && value.params.title_format) {
-          return value.params.title_format.replace(":text", value.title);
+        if (field.title_format) {
+          return field.title_format.replace(":text", value.title);
         }
 
         return value.title;

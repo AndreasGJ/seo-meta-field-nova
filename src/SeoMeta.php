@@ -76,9 +76,13 @@ class SeoMeta extends Field
                 'follow_type' => $resource->getSeoFollowDefault()
             ];
         }
+        $meta = [
+            'title_format' => $resource->getSeoTitleFormatter()
+        ];
         if ($this->value && $this->value->image) {
-            $this->withMeta([ 'image_url' => Storage::url($this->value->image) ]);
+            $meta['image_url'] = Storage::url($this->value->image);
         }
+        $this->withMeta($meta);
     }
 
     /**
@@ -102,11 +106,7 @@ class SeoMeta extends Field
      */
     public function titleFormat($format = ':text')
     {
-        $this->title_format = $format;
-
-        return $this->withMeta([
-            'title_format' => $format
-        ]);
+        return $this;
     }
 
     /**
