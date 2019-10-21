@@ -67,6 +67,10 @@ class SeoMeta extends Field
     {
         parent::resolve($resource, $attribute);
 
+        $meta = [
+            'default_values' => false,
+            'title_format' => $resource->getSeoTitleFormatter()
+        ];
         if (!$this->value) {
             $this->value = (object)[
                 'title' => $resource->getSeoTitleDefault() ?? '',
@@ -75,10 +79,9 @@ class SeoMeta extends Field
                 'image' => $resource->getSeoImageDefault(),
                 'follow_type' => $resource->getSeoFollowDefault()
             ];
+            $meta['default_values'] = true;
         }
-        $meta = [
-            'title_format' => $resource->getSeoTitleFormatter()
-        ];
+
         if ($this->value && $this->value->image) {
             $meta['image_url'] = Storage::url($this->value->image);
         }

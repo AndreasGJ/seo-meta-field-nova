@@ -21,11 +21,11 @@ if(!empty($seo['params'])){
 
 <title>{{ $seo['title'] }}</title>
 
-@if($seo['description'])
+@if(isset($seo['description']) && $seo['description'])
 <meta name="description" content="{{ $seo['description'] }}" />
 @endif
 
-@if($seo['keywords'])
+@if(isset($seo['keywords']) && $seo['keywords'])
 <meta name="keywords" content="{{ $seo['keywords'] }}" />
 @endif
 

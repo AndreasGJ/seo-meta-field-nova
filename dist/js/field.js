@@ -136,6 +136,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["resource", "resourceName", "resourceId", "field"],
   data: function data() {
@@ -242,12 +244,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [laravel_nova__WEBPACK_IMPORTED_MODULE_0__["FormField"], laravel_nova__WEBPACK_IMPORTED_MODULE_0__["HandlesValidationErrors"]],
   props: ["resourceName", "resourceId", "field"],
   data: function data() {
     return {
+      hasChanged: false,
       imageFile: null,
       followOptions: [{
         value: "index, follow",
@@ -288,6 +299,13 @@ __webpack_require__.r(__webpack_exports__);
      */
     handleChange: function handleChange(value) {
       this.value = value;
+    },
+
+    /**
+     * Has changed input
+     */
+    setHasChanged: function setHasChanged() {
+      this.hasChanged = true;
     }
   }
 });
@@ -311,9 +329,10 @@ __webpack_require__.r(__webpack_exports__);
   props: ["resourceName", "field"],
   computed: {
     seoStatus: function seoStatus() {
+      var field = this.field;
       var value = this.field.value;
 
-      if (value) {
+      if (!field.default_values && value) {
         if (["index, follow", "index, nofollow"].indexOf(value.follow_type) >= 0) {
           if (value.title) {
             return "bg-success";
@@ -11436,7 +11455,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("panel-item", { attrs: { field: _vm.field } }, [
-    _vm._v("\n  " + _vm._s(_vm.field.name) + "\n  "),
+    _vm._v("\n    " + _vm._s(_vm.field.name) + "\n    "),
     _c(
       "div",
       {
@@ -11608,12 +11627,15 @@ var render = function() {
             },
             domProps: { value: _vm.value.title },
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.value, "title", $event.target.value)
-              }
+              input: [
+                function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.value, "title", $event.target.value)
+                },
+                _vm.setHasChanged
+              ]
             }
           }),
           _vm._v(" "),
@@ -11651,12 +11673,15 @@ var render = function() {
             },
             domProps: { value: _vm.value.description },
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.value, "description", $event.target.value)
-              }
+              input: [
+                function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.value, "description", $event.target.value)
+                },
+                _vm.setHasChanged
+              ]
             }
           })
         ]),
@@ -11681,12 +11706,15 @@ var render = function() {
             },
             domProps: { value: _vm.value.keywords },
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.value, "keywords", $event.target.value)
-              }
+              input: [
+                function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.value, "keywords", $event.target.value)
+                },
+                _vm.setHasChanged
+              ]
             }
           })
         ]),
@@ -11705,6 +11733,7 @@ var render = function() {
                   id: _vm.field.name + "-follow",
                   options: _vm.followOptions
                 },
+                on: { change: _vm.setHasChanged },
                 model: {
                   value: _vm.value.follow_type,
                   callback: function($$v) {
@@ -11716,9 +11745,9 @@ var render = function() {
               [
                 _c("option", { attrs: { value: "", selected: "" } }, [
                   _vm._v(
-                    "\n          " +
+                    "\n                    " +
                       _vm._s(_vm.__("Choose an option")) +
-                      "\n        "
+                      "\n                "
                   )
                 ])
               ]
@@ -11738,6 +11767,7 @@ var render = function() {
               on: {
                 change: function($event) {
                   _vm.imageFile = $event
+                  _vm.setHasChanged($event)
                 }
               }
             })
