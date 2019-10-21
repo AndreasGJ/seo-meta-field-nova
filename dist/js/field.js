@@ -12212,7 +12212,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 Nova.booting(function (Vue, router, store) {
-  Vue.component("seo-media", __webpack_require__(/*! ./partials/SeoMedia */ "./resources/js/partials/SeoMedia.vue")["default"]);
+  Vue.component("seo-media", __webpack_require__(/*! ./partials/SeoMedia.vue */ "./resources/js/partials/SeoMedia.vue")["default"]);
   Vue.component('index-seo-meta', __webpack_require__(/*! ./components/IndexField.vue */ "./resources/js/components/IndexField.vue")["default"]);
   Vue.component('detail-seo-meta', __webpack_require__(/*! ./components/DetailField.vue */ "./resources/js/components/DetailField.vue")["default"]);
   Vue.component('form-seo-meta', __webpack_require__(/*! ./components/FormField.vue */ "./resources/js/components/FormField.vue")["default"]);
