@@ -1,11 +1,14 @@
 @php
-$seo = isset($page) && $page && method_exists($page, 'getSeoMeta') ? $page->getSeoMeta() : [
-    'title' => config('app.name', 'Laravel'),
-    'description' => null,
-    'keywords' => null
-];
-if (isset($page) && $page && is_array($page) && isset($page['seo'])) {
-    $seo = array_merge($seo, $page['seo']);
+if (isset($page) && $page && method_exists($page, 'getSeoMeta')) {
+    $seo = $page->getSeoMeta();
+} elseif (isset($seo) && $seo && is_array($seo) && isset($seo['title'])) {
+    $seo = $seo;
+} else {
+    $seo = [
+        'title' => config('app.name', 'Laravel'),
+        'description' => null,
+        'keywords' => null
+    ];
 }
 
 if(!empty($seo['params'])){

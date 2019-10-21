@@ -51,6 +51,8 @@ trait SeoMetaTrait
 
     /**
      * Get default SEO title
+     *
+     * @return string
      */
     public function getSeoTitleDefault()
     {
@@ -59,6 +61,8 @@ trait SeoMetaTrait
 
     /**
      * Get default SEO description
+     *
+     * @return string
      */
     public function getSeoDescriptionDefault()
     {
@@ -67,6 +71,8 @@ trait SeoMetaTrait
 
     /**
      * Get default SEO title
+     *
+     * @return string
      */
     public function getSeoKeywordsDefault()
     {
@@ -75,6 +81,8 @@ trait SeoMetaTrait
 
     /**
      * Get default SEO title
+     *
+     * @return string
      */
     public function getSeoImageDefault()
     {
@@ -83,6 +91,8 @@ trait SeoMetaTrait
 
     /**
      * Get default SEO title
+     *
+     * @return string
      */
     public function getSeoFollowDefault()
     {
