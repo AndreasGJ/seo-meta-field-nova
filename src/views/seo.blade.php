@@ -21,19 +21,21 @@ if(!empty($seo['params'])){
 
 <title>{{ $seo['title'] }}</title>
 
-@if(isset($seo['description']) && $seo['description'])
-<meta name="description" content="{{ $seo['description'] }}" />
+@if(config('seo.seo_status'))
+    @if(isset($seo['description']) && $seo['description'])
+    <meta name="description" content="{{ $seo['description'] }}" />
+    @endif
+
+    @if(isset($seo['keywords']) && $seo['keywords'])
+    <meta name="keywords" content="{{ $seo['keywords'] }}" />
+    @endif
+
+    <meta property="og:title" content="{{ $seo['title'] }}" />
+    <meta property="og:description" content="{{ $seo['description'] }}" />
+
+    @if(!empty($seo['image_path']))
+    <meta property="og:image" content="{{ $seo['image_path'] }}" />
+    @endif
+@else
+<meta name="robots" content="{{ !empty($seo['follow_type']) && config('seo.seo_status') ? $seo['follow_type'] : 'noindex, nofollow' }}" />
 @endif
-
-@if(isset($seo['keywords']) && $seo['keywords'])
-<meta name="keywords" content="{{ $seo['keywords'] }}" />
-@endif
-
-<meta property="og:title" content="{{ $seo['title'] }}" />
-<meta property="og:description" content="{{ $seo['description'] }}" />
-
-@if(!empty($seo['image_path']))
-<meta property="og:image" content="{{ $seo['image_path'] }}" />
-@endif
-
-<meta name="robots" content="{{ !empty($seo['follow_type']) ? $seo['follow_type'] : 'noindex, nofollow' }}" />

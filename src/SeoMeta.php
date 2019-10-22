@@ -17,13 +17,6 @@ class SeoMeta extends Field
     public $component = 'seo-meta';
 
     /**
-     * Title format
-     *
-     * @var string
-     */
-    private $title_format = ':text';
-
-    /**
      * Path for the SEO image
      *
      * @var string
@@ -51,7 +44,8 @@ class SeoMeta extends Field
 
         $this->withMeta([
             'hostname'     => url(''),
-            'title_format' => $this->title_format
+            'title_format' => config('seo.title_formatter'),
+            'follow_type_options' => config('seo.follow_type_options'),
         ]);
         $this->hideWhenCreating();
     }
@@ -98,18 +92,6 @@ class SeoMeta extends Field
     public function setupUrl($path = '')
     {
         return $this->withMeta(['url' => url($path)]);
-    }
-
-    /**
-     * Syntax formatter for the SEO title.
-     *
-     * @param string $format Formatter for SEO title
-     *
-     * @return Field
-     */
-    public function titleFormat($format = ':text')
-    {
-        return $this;
     }
 
     /**
@@ -172,7 +154,7 @@ class SeoMeta extends Field
                     'keywords'    => $value->keywords ?? null,
                     'follow_type' => $value->follow_type ?? null,
                     'params' => [
-                        'title_format' => $this->title_format
+                        'title_format' => $model->getSeoTitleFormatter()
                     ]
                 ]);
                 $has_change = true;
