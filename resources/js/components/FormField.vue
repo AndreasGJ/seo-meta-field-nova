@@ -75,15 +75,17 @@ export default {
 
     data() {
         const field = this.field;
-        console.log('field', field);
 
         return {
             hasChanged: false,
             imageFile: null,
-            followOptions: field && field.follow_type_options ? Object.keys(field.follow_type_options).map(value => ({
-                value,
-                label: field.follow_type_options[value]
-            })) : []
+            followOptions:
+                field && field.follow_type_options
+                    ? Object.keys(field.follow_type_options).map(value => ({
+                          value,
+                          label: field.follow_type_options[value]
+                      }))
+                    : []
         };
     },
     methods: {

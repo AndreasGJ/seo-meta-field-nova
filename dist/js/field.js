@@ -258,7 +258,6 @@ __webpack_require__.r(__webpack_exports__);
   props: ["resourceName", "resourceId", "field"],
   data: function data() {
     var field = this.field;
-    console.log('field', field);
     return {
       hasChanged: false,
       imageFile: null,
