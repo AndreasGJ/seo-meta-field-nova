@@ -22,6 +22,9 @@ class FieldServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'seo-meta');
+        $this->publishes([
+            __DIR__ . '/configs/seo.php' => config_path('seo.php'),
+        ]);
     }
 
     /**
@@ -31,6 +34,6 @@ class FieldServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(__DIR__ . '/configs/seo.php', 'seo');
     }
 }

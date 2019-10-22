@@ -32,13 +32,16 @@ trait SeoMetaTrait
             $title = $this->getSeoTitleDefault();
 
             if ($title) {
-                $formatter = $this->getSeoTitleFormatter() ?? ':text';
+                $formatter = $this->getSeoTitleFormatter() ?? config('seo.title_formatter');
                 $attrs = [
-                    'title' => str_replace(':text', $title, $formatter),
+                    'title' => $title,
                     'description' => $this->getSeoDescriptionDefault(),
                     'keywords' => $this->getSeoKeywordsDefault(),
                     'image' => $this->getSeoImageDefault(),
-                    'follow_type' => $this->getSeoFollowDefault()
+                    'follow_type' => $this->getSeoFollowDefault(),
+                    'params' => (object)[
+                        'title_format' => $formatter
+                    ]
                 ];
             }
         }
@@ -57,7 +60,7 @@ trait SeoMetaTrait
      */
     public function getSeoTitleFormatter()
     {
-        return ':text';
+        return config('seo.title_formatter');
     }
 
     /**
@@ -107,6 +110,6 @@ trait SeoMetaTrait
      */
     public function getSeoFollowDefault()
     {
-        return 'index, follow';
+        return config('seo.default_follow_type');
     }
 }

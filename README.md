@@ -12,6 +12,11 @@ And then run the migrations:
 php artisan migrate
 ```
 
+And then publish the configs:
+```
+php artisan vendor:publish --provider="Gwd\SeoMeta\FieldServiceProvider"
+```
+
 ## How to use the field
 Find the model you want to have the SEO fields on, example could be `App\Models\Page`, then add the `SeoMetaTrait` trait:
 ```
