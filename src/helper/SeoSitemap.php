@@ -81,8 +81,8 @@ class SeoSitemap {
 
         foreach ($this->items as $item) {
             $xml .= '<url>'.
-                '<loc>' . (substr($item->url, 0, 1) === '/' ? url($item->url) : $item->url) . '</loc>'.
-                '<lastmod>' . ($item->lastmod || $lastmod) . '</lastmod>'.
+                '<loc>' . (substr($item->url, 0, 1) == '/' ? url($item->url) : $item->url) . '</loc>'.
+                '<lastmod>' . ($item->lastmod ?? $lastmod) . '</lastmod>'.
             '</url>';
 
             if ($item->lastmod) {
