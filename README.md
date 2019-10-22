@@ -91,6 +91,55 @@ public function getSeoImageDefault(): string
 public function getSeoFollowDefault(): string
 ```
 
+## Setup Sitemap functionality
+If you want the sitemap functionality then activate the sitemap by changing the `seo.sitemap_status` config to `true`. Then add the models which has the `SeoSitemapTrait` trait to the `seo.sitemap_models` array, like this:
+```
+    ...
+    'sitemap_status' => env('SITEMAP_STATUS', true),
+
+    ...
+    'sitemap_models' => [
+        App\Models\Page::class
+    ],
+```
+
+### Add Sitemap trait to models
+When you want the eloquent model to be shown in the sitemap then you need to add the `SeoSitemapTrait` trait to it:
+```
+...
+use Gwd\SeoMeta\Traits\SeoSitemapTrait;
+
+class Page extends Model
+{
+    use SeoMetaTrait, SeoSitemapTrait;
+    ...
+
+    /**
+     * Get the Page url by item
+     *
+     * @return string
+     */
+    public function getSitemapItemUrl()
+    {
+        return url($this->slug);
+    }
+
+    /**
+     * Query all the Page items which should be
+     * part of the sitemap (crawlable for google).
+     *
+     * @return Builder
+     */
+    public static function getSitemapItems()
+    {
+        return static::all();
+    }
+}
+```
+
+Know you should be able to go to the `seo.sitemap_path` which is `/sitemap` as default. Then you should get an xml in the correct sitemap structure for [Google Search Console](https://search.google.com/search-console/about).
+
+
 ## How does it look in Laravel Nova
 If the field is shown **in the index view** of the Resource, then you should see a column with a dot:
 ![alt text](/assets/images/seo-field-index.jpg)

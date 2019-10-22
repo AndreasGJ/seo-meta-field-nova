@@ -22,6 +22,7 @@ class FieldServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'seo-meta');
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->publishes([
             __DIR__ . '/configs/seo.php' => config_path('seo.php'),
         ]);
