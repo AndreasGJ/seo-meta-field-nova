@@ -257,22 +257,17 @@ __webpack_require__.r(__webpack_exports__);
   mixins: [laravel_nova__WEBPACK_IMPORTED_MODULE_0__["FormField"], laravel_nova__WEBPACK_IMPORTED_MODULE_0__["HandlesValidationErrors"]],
   props: ["resourceName", "resourceId", "field"],
   data: function data() {
+    var field = this.field;
+    console.log('field', field);
     return {
       hasChanged: false,
       imageFile: null,
-      followOptions: [{
-        value: "index, follow",
-        label: "Index and follow"
-      }, {
-        value: "noindex, follow",
-        label: "No index and follow"
-      }, {
-        value: "index, nofollow",
-        label: "Index and no follow"
-      }, {
-        value: "noindex, nofollow",
-        label: "No index and no follow"
-      }]
+      followOptions: field && field.follow_type_options ? Object.keys(field.follow_type_options).map(function (value) {
+        return {
+          value: value,
+          label: field.follow_type_options[value]
+        };
+      }) : []
     };
   },
   methods: {

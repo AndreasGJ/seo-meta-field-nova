@@ -74,21 +74,16 @@ export default {
     props: ["resourceName", "resourceId", "field"],
 
     data() {
+        const field = this.field;
+        console.log('field', field);
+
         return {
             hasChanged: false,
             imageFile: null,
-            followOptions: [
-                { value: "index, follow", label: "Index and follow" },
-                { value: "noindex, follow", label: "No index and follow" },
-                {
-                    value: "index, nofollow",
-                    label: "Index and no follow"
-                },
-                {
-                    value: "noindex, nofollow",
-                    label: "No index and no follow"
-                }
-            ]
+            followOptions: field && field.follow_type_options ? Object.keys(field.follow_type_options).map(value => ({
+                value,
+                label: field.follow_type_options[value]
+            })) : []
         };
     },
     methods: {
