@@ -12,6 +12,15 @@ class SeoMetaItem extends Model
      * @var array
      */
     protected $guarded = [ 'id' ];
+    
+    /**
+     * Hidden variables
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'seo_metaable_type', 'created_at', 'updated_at'
+    ];
 
     /**
      * Table name for the model
