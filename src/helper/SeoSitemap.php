@@ -16,14 +16,14 @@ class SeoSitemap {
      * 
      * @var bool
      */
-    private $use_lastmod = false;
+    private $use_lastmod = true;
 
     /**
      * Construct the sitemap class
      *
      * @return void
      */
-    public function __construct($use_lastmod = false)
+    public function __construct($use_lastmod = true)
     {
         $this->use_lastmod = $use_lastmod;
 
