@@ -1,6 +1,8 @@
 <?php
 namespace Gwd\SeoMeta\Helper;
 
+use Carbon\Carbon;
+
 class SeoSitemap {
     /**
      * Array of the all the items in the sitemap
@@ -10,14 +12,22 @@ class SeoSitemap {
     private $items = [];
 
     /**
+     * Should the sitemap have the lastmod var?
+     * 
+     * @var bool
+     */
+    private $use_lastmod = false;
+
+    /**
      * Construct the sitemap class
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($use_lastmod = false)
     {
-        $sitemap_models = config('seo.sitemap_models');
+        $this->use_lastmod = $use_lastmod;
 
+        $sitemap_models = config('seo.sitemap_models');
         $this->attachModelItems($sitemap_models);
     }
 
@@ -52,7 +62,8 @@ class SeoSitemap {
      *
      * @return SeoSitemap
      */
-    public function attachCustom($path, $lastmod = null){
+    public function attachCustom($path, $lastmod = null)
+    {
         $this->items[] = (object)[
             'url' => url($path),
             'lastmod' => $lastmod
@@ -65,7 +76,8 @@ class SeoSitemap {
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return $this->items;
     }
 
@@ -74,15 +86,17 @@ class SeoSitemap {
      *
      * @return string
      */
-    public function toXml(){
+    public function toXml()
+    {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'.
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-        $lastmod = null;
+        $lastmod = Carbon::now()->format('Y-m-d H:i:s');
 
         foreach ($this->items as $item) {
+            $use_lastmod = $this->use_lastmod ? ($item->lastmod ?? $lastmod) : null;
             $xml .= '<url>'.
                 '<loc>' . (substr($item->url, 0, 1) == '/' ? url($item->url) : $item->url) . '</loc>'.
-                '<lastmod>' . ($item->lastmod ?? $lastmod) . '</lastmod>'.
+                ($use_lastmod ? '<lastmod>' . $use_lastmod . '</lastmod>' : '').
             '</url>';
 
             if ($item->lastmod) {
