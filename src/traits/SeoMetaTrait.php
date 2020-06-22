@@ -37,7 +37,7 @@ trait SeoMetaTrait
                     'title' => $title,
                     'description' => $this->getSeoDescriptionDefault(),
                     'keywords' => $this->getSeoKeywordsDefault(),
-                    'image' => $this->getSeoImageDefault(),
+                    'image' => $this->getSeoImageDefault() ?? asset(config('seo.default_seo_image')),
                     'follow_type' => $this->getSeoFollowDefault(),
                     'params' => (object)[
                         'title_format' => $formatter
