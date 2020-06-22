@@ -34,7 +34,6 @@ return [
     | the ' - Test site' appended to the actual SEO title.
     |
     */
-
     'title_formatter' => ':text',
 
     /*
@@ -62,8 +61,12 @@ return [
     | Set the default follow type.
     |
     */
-
     'default_follow_type' => env('SEO_DEFAULT_FOLLOW_TYPE', 'index, follow'),
+
+    /*
+    * SEO default image
+    */
+    'default_seo_image' => null,
 
     /*
     |--------------------------------------------------------------------------
