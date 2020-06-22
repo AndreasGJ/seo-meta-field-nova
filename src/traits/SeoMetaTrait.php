@@ -46,7 +46,7 @@ trait SeoMetaTrait
             }
         }
 
-        if($attrs && isset($attrs['image']) && $attrs['image']){
+        if($attrs && isset($attrs['image']) && $attrs['image'] && strpos($attrs['image'], '//') === false){
             $attrs['image_path'] = Storage::url($attrs['image']);
         }
 
