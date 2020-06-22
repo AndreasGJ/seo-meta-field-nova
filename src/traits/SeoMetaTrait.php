@@ -100,7 +100,7 @@ trait SeoMetaTrait
      */
     public function getSeoImageDefault()
     {
-        return config('seo.default_seo_image');
+        return asset(config('seo.default_seo_image'));
     }
 
     /**
