@@ -37,7 +37,7 @@ trait SeoMetaTrait
                     'title' => $title,
                     'description' => $this->getSeoDescriptionDefault(),
                     'keywords' => $this->getSeoKeywordsDefault(),
-                    'image' => $this->getSeoImageDefault() ?? asset(config('seo.default_seo_image')),
+                    'image' => $this->getSeoImageDefault(),
                     'follow_type' => $this->getSeoFollowDefault(),
                     'params' => (object)[
                         'title_format' => $formatter
@@ -100,7 +100,11 @@ trait SeoMetaTrait
      */
     public function getSeoImageDefault()
     {
-        return asset(config('seo.default_seo_image'));
+        if (config('seo.default_seo_image')) {
+            return asset(config('seo.default_seo_image'));
+        }
+
+        return null;
     }
 
     /**
