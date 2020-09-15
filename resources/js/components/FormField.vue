@@ -11,6 +11,7 @@
                     :placeholder="field.name"
                     v-model="value.title"
                     @input="setHasChanged"
+                    maxlength="255"
                 />
                 <p
                     class="help-block"
@@ -25,6 +26,7 @@
                     placeholder="Enter SEO description"
                     v-model="value.description"
                     @input="setHasChanged"
+                    maxlength="255"
                 />
             </div>
             <div class="form-group mb-3">
@@ -35,6 +37,7 @@
                     placeholder="Enter SEO keywords"
                     v-model="value.keywords"
                     @input="setHasChanged"
+                    maxlength="255"
                 />
             </div>
             <div class="form-group mb-3">
