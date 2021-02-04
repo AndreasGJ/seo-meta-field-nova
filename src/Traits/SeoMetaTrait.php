@@ -14,7 +14,9 @@ trait SeoMetaTrait
      */
     public function seo_meta()
     {
-        return $this->morphOne(SeoMetaItem::class, 'seo_metaable');
+        return $this->morphOne(SeoMetaItem::class, 'seo_metaable')->withDefault(
+            new SeoMetaItem()
+        );
     }
 
     /**
