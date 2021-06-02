@@ -28,7 +28,7 @@ class SeoMeta extends Field
      *
      * @var string
      */
-    private $file_disk = 'public';
+    private $file_disk;
 
     /**
      * Create a new field.
@@ -41,6 +41,8 @@ class SeoMeta extends Field
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
+
+        $this->file_disk = config('seo.disk');
 
         $this->withMeta([
             'hostname'     => url(''),
@@ -77,7 +79,7 @@ class SeoMeta extends Field
         }
 
         if ($this->value && $this->value->image) {
-            $meta['image_url'] = Storage::url($this->value->image);
+            $meta['image_url'] = Storage::disk($this->file_disk)->url($this->value->image);
         }
         $this->withMeta($meta);
     }

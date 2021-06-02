@@ -89,4 +89,6 @@ return [
     */
 
     'sitemap_path' => '/sitemap',
+
+    'disk' => env('SEO_IMAGE_DIKS', 'public')
 ];

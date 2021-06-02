@@ -43,6 +43,7 @@ class Page extends Resource
     return [
       ...,
       SeoMeta::make('SEO', 'seo_meta')
+        ->disk('s3-public') //disk to store seo image, default is public
     ];
   }
 }
