@@ -46,6 +46,7 @@ class SeoMeta extends Field
             'hostname'     => url(''),
             'title_format' => config('seo.title_formatter'),
             'follow_type_options' => config('seo.follow_type_options'),
+            'available_locales'=>config('seo.available_locales')
         ]);
         $this->hideWhenCreating();
     }
@@ -138,7 +139,6 @@ class SeoMeta extends Field
     {
         $has_change = false;
         $relationship = $model->{$attribute} ?? new SeoMetaItem;
-
         if($model->id){
             if(!$relationship->seo_metaable_type){
                 $relationship->seo_metaable_type = get_class($model);

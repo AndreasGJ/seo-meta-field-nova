@@ -15,7 +15,13 @@ export default {
                         value.follow_type
                     ) >= 0
                 ) {
-                    if (value.title) {
+                    let hasTitleForAnyLocale = false;
+                    for (const locale in value.title) {
+                        if (value.title[locale] && value.title[locale].trim() !== ''){
+                            hasTitleForAnyLocale = true;
+                        }
+                    }
+                    if (hasTitleForAnyLocale) {
                         return "bg-success";
                     }
                     return "bg-warning";

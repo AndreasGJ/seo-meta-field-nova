@@ -6,38 +6,40 @@ use Illuminate\Database\Eloquent\Model;
 
 class SeoMetaItem extends Model
 {
-    /**
-     * Guarded variables
-     *
-     * @var array
-     */
-    protected $guarded = [ 'id' ];
-    
-    /**
-     * Hidden variables
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'seo_metaable_type', 'created_at', 'updated_at'
-    ];
+  /**
+   * Guarded variables
+   *
+   * @var array
+   */
+  protected $guarded = ['id'];
 
-    /**
-     * Table name for the model
-     *
-     * @var string
-     */
-    protected $table = 'seo_meta';
+  /**
+   * Hidden variables
+   *
+   * @var array
+   */
+  protected $hidden = [
+    'seo_metaable_type', 'created_at', 'updated_at'
+  ];
 
-    /**
-     * Casts variables
-     *
-     * @var array
-     */
-    protected $casts = [
-        'params' => 'object'
-    ];
+  /**
+   * Table name for the model
+   *
+   * @var string
+   */
+  protected $table = 'seo_meta';
 
+  /**
+   * Casts variables
+   *
+   * @var array
+   */
+  protected $casts = [
+    'params' => 'object',
+    'title'=>'json',
+    'description'=>'json',
+    'keywords'=>'json',
+  ];
     /**
      * Get the owning seo_metaable model.
      *
@@ -45,6 +47,6 @@ class SeoMetaItem extends Model
      */
     public function seo_metaable()
     {
-        return $this->morphTo();
+      return $this->morphTo();
     }
 }

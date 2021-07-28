@@ -8,31 +8,37 @@
                 class="btn btn-primary btn-default"
                 @click="showSeoPreviews = !showSeoPreviews"
                 v-if="hasSeo"
-            >{{ showSeoPreviews ? 'Hide' : 'Show' }} SEO previews</button>
-            <div class="seo-meta-detail__previews" v-if="showSeoPreviews && hasSeo">
+            >{{ showSeoPreviews ? 'Hide' : 'Show' }} SEO previews
+            </button>
+            <div class="seo-meta-detail__previews" v-if="showSeoPreviews && hasSeo" v-for="(locale,index) in availableLocales" :key="index">
                 <div class="seo-meta-detail__wrapper">
-                    <div class="seo-meta-detail__wrapper__label">Google</div>
+                    <div class="seo-meta-detail__wrapper__label">Google [{{ locale }}]</div>
                     <div class="seo-meta-detail__wrapper__item seo-meta-detail__google">
-                        <div class="seo-meta-detail__google__title">{{ seoTitle }}</div>
+                        <div class="seo-meta-detail__google__title">{{ seoTitleFor(locale) }}</div>
                         <div
                             class="seo-meta-detail__google__url"
-                        >{{ (field.url || field.hostname).replace(/:\/\//, ':||').replace(/(\/)/g, ' › ').replace(':||', '://') }}</div>
+                        >{{
+                                (field.url || field.hostname).replace(/:\/\//, ':||').replace(/(\/)/g, ' › ').replace(':||', '://')
+                            }}
+                        </div>
                         <div
                             class="seo-meta-detail__google__description"
-                        >{{ field.value.description }}</div>
+                        >{{ field.value.description[locale] }}
+                        </div>
                     </div>
                 </div>
                 <div class="seo-meta-detail__wrapper">
-                    <div class="seo-meta-detail__wrapper__label">Facebook</div>
+                    <div class="seo-meta-detail__wrapper__label">Facebook [{{ locale }}]</div>
                     <div class="seo-meta-detail__wrapper__item seo-meta-detail__facebook">
                         <div class="seo-meta-detail__facebook__image" v-if="field.image_url">
-                            <img :src="field.image_url" />
+                            <img :src="field.image_url"/>
                         </div>
                         <div class="seo-meta-detail__facebook__info">
                             <div
                                 class="seo-meta-detail__facebook__domain"
-                            >{{ field.hostname.replace(/^https?:\/\//g, '') }}</div>
-                            <div class="seo-meta-detail__facebook__title">{{ seoTitle }}</div>
+                            >{{ field.hostname.replace(/^https?:\/\//g, '') }}
+                            </div>
+                            <div class="seo-meta-detail__facebook__title">{{ seoTitleFor(locale) }}</div>
                         </div>
                     </div>
                 </div>
@@ -46,25 +52,31 @@ export default {
     props: ["resource", "resourceName", "resourceId", "field"],
     data() {
         return {
-            showSeoPreviews: false
+            showSeoPreviews: false,
+            availableLocales: this.field.available_locales,
         };
     },
     computed: {
         hasSeo() {
             const value = this.field.value;
-            if (value && value.title) {
-                return true;
+            let hasTitleForAnyLocale = false;
+            for (const locale in value.title) {
+                if (value.title[locale] && value.title[locale].trim() !== ''){
+                    hasTitleForAnyLocale = true;
+                }
             }
-            return false;
+            return hasTitleForAnyLocale;
         },
-        seoTitle() {
+    },
+    methods:{
+        seoTitleFor(locale) {
             const field = this.field;
             const value = field.value;
-            if (value && value.title) {
+            if (value && value.title && value.title[locale]) {
                 if (field.title_format) {
-                    return field.title_format.replace(":text", value.title);
+                    return field.title_format.replace(":text", value.title[locale]);
                 }
-                return value.title;
+                return value.title[locale];
             }
             return null;
         }
@@ -76,21 +88,25 @@ export default {
 .seo-meta-detail__previews {
     margin: 30px 0 0;
 }
+
 .seo-meta-detail__wrapper {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin: 0 0 15px 0;
 }
+
 .seo-meta-detail__wrapper__label {
     padding-right: 15px;
     font-weight: bold;
     width: 120px;
 }
+
 .seo-meta-detail__wrapper__item {
     max-width: 500px;
     flex-grow: 1;
 }
+
 .seo-meta-detail__google {
     border: 1px solid #ebebeb;
     background: #fff;
@@ -106,6 +122,7 @@ export default {
         line-height: 1.3;
         color: #1a0dab;
     }
+
     &__url {
         font-size: 16px;
         padding-top: 1px;
@@ -131,9 +148,11 @@ export default {
             width: 100%;
         }
     }
+
     &__info {
         padding: 10px 12px;
     }
+
     &__title {
         font-size: 16px;
         line-height: 20px;
@@ -141,6 +160,7 @@ export default {
         color: #1d2129;
         padding: 5px 0;
     }
+
     &__domain {
         color: #606770;
         font-size: 12px;

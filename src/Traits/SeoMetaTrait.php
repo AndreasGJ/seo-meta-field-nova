@@ -66,31 +66,31 @@ trait SeoMetaTrait
     /**
      * Get default SEO title
      *
-     * @return string
+     * @return array
      */
-    public function getSeoTitleDefault()
+    public function getSeoTitleDefault(): array
     {
-        return null;
+        return $this->getDefaultValue();
     }
 
     /**
      * Get default SEO description
      *
-     * @return string
+     * @return array
      */
-    public function getSeoDescriptionDefault()
+    public function getSeoDescriptionDefault(): array
     {
-        return null;
+        return $this->getDefaultValue();
     }
 
     /**
      * Get default SEO title
      *
-     * @return string
+     * @return array
      */
-    public function getSeoKeywordsDefault()
+    public function getSeoKeywordsDefault(): array
     {
-        return null;
+        return $this->getDefaultValue();
     }
 
     /**
@@ -115,5 +115,42 @@ trait SeoMetaTrait
     public function getSeoFollowDefault()
     {
         return config('seo.default_follow_type');
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultValue(): array
+    {
+        $array = [];
+        foreach (config('seo.available_locales') as $locale) {
+            $array[$locale] = null;
+        }
+        return $array;
+    }
+
+    /**
+     * @return array
+     */
+    public function buildSeoForCurrentLocale(): array
+    {
+        $seo = $this->getSeoMeta();
+        $locale = app()->getLocale();
+        $fallback_locale = config('seo.fallback_locale');
+        $translatable_keys = ['title', 'description', 'keywords'];
+        foreach ($translatable_keys as $key) {
+            if (isset($seo[$key])) {
+                if (isset($seo[$key][$locale]) && !empty($seo[$key][$locale])) {
+                    $seo[$key] = $seo[$key][$locale];
+                } elseif (isset($seo[$key][$fallback_locale]) && !empty($seo[$key][$fallback_locale])) {
+                    $seo[$key] = $seo[$key][$fallback_locale];
+                } else {
+                    $seo[$key] = null;
+                }
+            } else {
+                $seo[$key] = null;
+            }
+        }
+        return $seo;
     }
 }

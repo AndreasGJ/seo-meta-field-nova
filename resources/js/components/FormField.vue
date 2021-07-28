@@ -1,42 +1,44 @@
 <template>
     <default-field :field="field" :errors="errors">
-        <template slot="field">
+        <template slot="field" v-if="ready">
+          <div v-for="(locale,index) in availableLocales" :key="index">
             <div class="form-group mb-3">
-                <label class="mb-1 block">Title:</label>
+                <label class="mb-1 block">Title [{{locale}}]:</label>
                 <input
-                    :id="field.name + '-title'"
+                    :id="field.name + locale + '-title'"
                     type="text"
                     class="w-full form-control form-input form-input-bordered"
                     :class="errorClasses"
-                    :placeholder="field.name"
-                    v-model="value.title"
+                    :placeholder="field.name[locale]"
+                    v-model="value.title[locale]"
                     @input="setHasChanged"
                 />
                 <p
                     class="help-block"
                     v-if="field.title_format && field.title_format !== ':text'"
-                >{{ field.title_format.replace(':text', value.title || '') }}</p>
+                >{{ field.title_format.replace(':text', value.title[locale] || '') }}</p>
             </div>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Description:</label>
+                <label class="mb-1 block">Description [{{locale}}]:</label>
                 <textarea
                     class="w-full form-control form-input form-input-bordered py-3 h-auto"
-                    :id="field.name + '-description'"
+                    :id="field.name + locale + '-description'"
                     placeholder="Enter SEO description"
-                    v-model="value.description"
+                    v-model="value.description[locale]"
                     @input="setHasChanged"
                 />
             </div>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Keywords:</label>
+                <label class="mb-1 block">Keywords [{{locale}}]:</label>
                 <textarea
                     class="w-full form-control form-input form-input-bordered py-3 h-auto"
-                    :id="field.name + '-keywords'"
-                    placeholder="Enter SEO keywords"
-                    v-model="value.keywords"
+                    :id="field.name + locale + '-keywords'"
+                    placeholder="separate between keywords by ', ' ex : keyword1, keyword2"
+                    v-model="value.keywords[locale]"
                     @input="setHasChanged"
                 />
             </div>
+          </div>
             <div class="form-group mb-3">
                 <label class="mb-1 block">Follow:</label>
                 <select-control
@@ -85,7 +87,9 @@ export default {
                           value,
                           label: field.follow_type_options[value]
                       }))
-                    : []
+                    : [],
+          availableLocales:field.available_locales,
+          ready:false
         };
     },
     methods: {
@@ -93,7 +97,8 @@ export default {
          * Set the initial, internal value for the field.
          */
         setInitialValue() {
-            this.value = this.field.value || {};
+            this.value = this.field.value || this.field.default_value;
+            this.ready = true;
         },
 
         /**
