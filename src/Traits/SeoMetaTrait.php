@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Storage;
 
 trait SeoMetaTrait
 {
+    private $title = [];
+    private $description = [];
+    private $keywords = [];
+    private $image = null;
+    private $follow = null;
+
     /**
      * Get the seo_metaable relationship.
      *
@@ -21,24 +27,23 @@ trait SeoMetaTrait
      * Return the seo_metaable data as array
      *
      * @return array
+     * @throws \Exception
      */
     public function getSeoMeta()
     {
         $attrs = false;
-
         if ($this->seo_meta) {
             $attrs = $this->seo_meta->toArray();
         } else {
-            $title = $this->getSeoTitleDefault();
-
-            if ($title) {
+            $this->setDefaultValues();
+            if ($this->validateTitleExistsForAnyLocale()) {
                 $formatter = $this->getSeoTitleFormatter() ?? config('seo.title_formatter');
                 $attrs = [
-                    'title' => $title,
-                    'description' => $this->getSeoDescriptionDefault(),
-                    'keywords' => $this->getSeoKeywordsDefault(),
-                    'image' => $this->getSeoImageDefault(),
-                    'follow_type' => $this->getSeoFollowDefault(),
+                    'title' => $this->title,
+                    'description' => $this->description,
+                    'keywords' => $this->keywords,
+                    'image' => $this->image,
+                    'follow_type' => $this->follow,
                     'params' => (object)[
                         'title_format' => $formatter
                     ]
@@ -70,7 +75,7 @@ trait SeoMetaTrait
      */
     public function getSeoTitleDefault(): array
     {
-        return $this->getDefaultValue();
+        return $this->title;
     }
 
     /**
@@ -80,7 +85,7 @@ trait SeoMetaTrait
      */
     public function getSeoDescriptionDefault(): array
     {
-        return $this->getDefaultValue();
+        return $this->description;
     }
 
     /**
@@ -90,54 +95,39 @@ trait SeoMetaTrait
      */
     public function getSeoKeywordsDefault(): array
     {
-        return $this->getDefaultValue();
+        return $this->keywords;
     }
 
     /**
      * Get default SEO title
      *
-     * @return string
+     * @return string|null
      */
-    public function getSeoImageDefault()
+    public function getSeoImageDefault(): ?string
     {
-        if (config('seo.default_seo_image')) {
-            return asset(config('seo.default_seo_image'));
-        }
-
-        return null;
+        return $this->image;
     }
 
     /**
      * Get default SEO title
      *
-     * @return string
+     * @return string|null
      */
-    public function getSeoFollowDefault()
+    public function getSeoFollowDefault(): ?string
     {
-        return config('seo.default_follow_type');
+        return $this->follow;
     }
 
     /**
      * @return array
-     */
-    public function getDefaultValue(): array
-    {
-        $array = [];
-        foreach (config('seo.available_locales') as $locale) {
-            $array[$locale] = null;
-        }
-        return $array;
-    }
-
-    /**
-     * @return array
+     * @throws \Exception
      */
     public function buildSeoForCurrentLocale(): array
     {
         $seo = $this->getSeoMeta();
-        $locale = app()->getLocale();
         $fallback_locale = config('seo.fallback_locale');
         $translatable_keys = ['title', 'description', 'keywords'];
+        $locale = app()->getLocale();
         foreach ($translatable_keys as $key) {
             if (isset($seo[$key])) {
                 if (isset($seo[$key][$locale]) && !empty($seo[$key][$locale])) {
@@ -152,5 +142,104 @@ trait SeoMetaTrait
             }
         }
         return $seo;
+    }
+
+    /**
+     * @param array $title
+     *
+     * @return bool
+     */
+    private function validateTitleExistsForAnyLocale(): bool
+    {
+        $locale = app()->getLocale();
+        $fallback_locale = config('seo.fallback_locale');
+        $exists = false;
+        $title = $this->title;
+        if (isset($title[$locale]) && !empty($title[$locale])) {
+            $exists = true;
+        } elseif (isset($title[$fallback_locale]) && !empty($title[$fallback_locale])) {
+            $exists = true;
+        }
+        return $exists;
+    }
+
+    /**
+     * Set the default values from the config
+     * then call the registerDefaultValues function to override
+     * them if the user added new default values
+     */
+    private function setDefaultValues(): void
+    {
+        if (config('seo.default_seo_image')) {
+            $this->addImageDefault(asset(config('seo.default_seo_image')));
+        }
+        foreach (config('seo.available_locales') as $locale) {
+            $this->addTitleDefault(config('seo.default_seo_title', $locale));
+            $this->addDescriptionDefault(config('seo.default_seo_description', $locale));
+            $this->addKeywordsDefault(config('seo.default_seo_keywords', $locale));
+        }
+        $this->addFollowDefault(config('seo.default_follow_type'));
+        // override by user defaults if exists
+        $this->registerDefaultValues();
+    }
+
+    /**
+     * REGISTERING THE DEFAULT VALUES IF EXISTS
+     */
+    public function registerDefaultValues(): void
+    {
+
+    }
+
+    /**
+     * @param string|null $value
+     * @param string|null $locale
+     */
+    public function addTitleDefault(string $value = null, string $locale = null): void
+    {
+        if (!$locale) {
+            $locale = config('seo.fallback_locale');
+        }
+        $this->title[$locale] = $value;
+    }
+
+    /**
+     * @param string|null $value
+     * @param string|null $locale
+     */
+    public function addDescriptionDefault(string $value = null, string $locale = null): void
+    {
+        if (!$locale) {
+            $locale = config('seo.fallback_locale');
+        }
+        $this->description[$locale] = $value;
+    }
+
+    /**
+     * @param string|null $value
+     * @param string|null $locale
+     */
+    public function addKeywordsDefault(string $value = null, string $locale = null): void
+    {
+        if (!$locale) {
+            $locale = config('seo.fallback_locale');
+        }
+        $this->keywords[$locale] = $value;
+    }
+
+    /**
+     * @param string|null $value
+     */
+    public function addImageDefault(string $value = null): void
+    {
+        $this->image = $value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function addFollowDefault(string $value): void
+    {
+        $this->follow = $value;
     }
 }
