@@ -69,6 +69,25 @@ return [
   'default_seo_image' => null,
 
   /*
+    * SEO default title
+    */
+  'default_seo_title' => config('app.name'),
+
+  /*
+    * SEO default description
+    */
+  'default_seo_description' => null,
+
+  /*
+    * SEO default keywords
+   * ex : keyword1, keyword2, keyword3
+    */
+  'default_seo_keywords' => null,
+
+  /*
+   *
+   */
+  /*
   |--------------------------------------------------------------------------
   | Sitemap models
   |--------------------------------------------------------------------------

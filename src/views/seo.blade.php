@@ -5,9 +5,9 @@
         $seo = $seo;
     } else {
         $seo = [
-            'title' => config('app.name', 'Laravel'),
-            'description' => null,
-            'keywords' => null
+            'title' => config('seo.default_seo_title'),
+            'description' => config('seo.default_seo_description'),
+            'keywords' => config('seo.default_seo_keywords')
         ];
     }
     if(!empty($seo['params'])){
