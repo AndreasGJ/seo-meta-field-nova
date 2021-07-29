@@ -7,15 +7,15 @@ class Seo {
     /**
      * Constructs the SEO array for a given page
      *
-     * @param array $title       SEO title
-     * @param array $description SEO description
-     * @param array $keywords    SEO keywords
-     * @param string|null $image       SEO image
+     * @param string $title       SEO title
+     * @param string $description SEO description
+     * @param string $keywords    SEO keywords
+     * @param string $image       SEO image
      * @param string $follow_type SEO robots value
      *
      * @return array
      */
-    public static function renderAttributes(array $title = [],array $description = [],array $keywords = [],string $image = null, string $follow_type = 'index, follow'):array
+    public static function renderAttributes($title = '', $description = '', $keywords = '', $image = null, $follow_type = 'index, follow')
     {
         if (!$image && config('seo.default_seo_image')) {
             $image = asset(config('seo.default_seo_image'));
