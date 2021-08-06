@@ -108,7 +108,10 @@ return [
   */
 
   'sitemap_path' => '/sitemap',
+  
 
+  'disk' => env('SEO_IMAGE_DISK', 'public')
+  
   /*
   |--------------------------------------------------------------------------
   | Available Locales
@@ -118,6 +121,8 @@ return [
   |
   */
 
+
   'available_locales' => ['en'],
   'fallback_locale' => 'en'
+
 ];

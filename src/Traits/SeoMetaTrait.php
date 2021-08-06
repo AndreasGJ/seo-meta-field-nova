@@ -52,7 +52,9 @@ trait SeoMetaTrait
         }
 
         if ($attrs && isset($attrs['image']) && $attrs['image']) {
-            $attrs['image_path'] = strpos($attrs['image'], '//') === false ? Storage::url($attrs['image']) : $attrs['image'];
+            $attrs['image_path'] = strpos($attrs['image'], '//') === false
+                ? Storage::disk(config('seo.disk'))->url($attrs['image'])
+                : $attrs['image'];
         }
 
         return $attrs;
