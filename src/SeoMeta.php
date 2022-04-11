@@ -61,6 +61,10 @@ class SeoMeta extends Field
      */
     public function resolve($resource, $attribute = null)
     {
+        if ($resource instanceof \Whitecube\NovaPage\Pages\Template) {
+            $resource = $resource->getOriginal();
+        }
+
         parent::resolve($resource, $attribute);
 
         $meta = [
@@ -138,6 +142,10 @@ class SeoMeta extends Field
                                                 $model,
                                                 $attribute)
     {
+        if ($model instanceof \Whitecube\NovaPage\Pages\Template) {
+            $model = $model->getOriginal();
+        }
+
         $has_change = false;
         $relationship = $model->{$attribute} ?? new SeoMetaItem;
 
