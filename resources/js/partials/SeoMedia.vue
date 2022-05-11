@@ -3,14 +3,14 @@
     <div class="seo-media-droparea" v-if="!previewUrl">
       <img :src="value" v-if="value" />
       <div class="seo-media-droparea__label" v-else>
-        Click or drop file here
+        {{ __('Click or drop file here' )}}
         <br />
-        <i>Best size for image (1200 x 630)</i>
+        <i>{{ __('Best size for image (1200 x 630)') }}</i>
       </div>
       <div
         class="seo-media-droparea__above seo-media-droparea__label"
         v-if="value"
-      >Click or drop file to replace</div>
+      >{{ __('Click or drop file to replace') }}</div>
       <input type="file" class="seo-media-input" max="1" @change="whenUploadFile($event)" />
     </div>
     <div
@@ -104,7 +104,8 @@ export default {
       };
       reader.readAsDataURL(file);
 
-      return this.$emit("change", file);
+      console.log('ss', file);
+      return this.$emit("imageSelect", file);
     }
   }
 };
@@ -121,6 +122,12 @@ export default {
   padding-top: 52.5%;
   cursor: pointer;
 }
+
+.dark .seo-media-droparea {
+    background: rgba(var(--colors-gray-900),var(--tw-bg-opacity));
+    border: rgba(var(--colors-gray-700),var(--tw-border-opacity));
+}
+
 .seo-media-droparea img {
   display: block;
   width: 100%;

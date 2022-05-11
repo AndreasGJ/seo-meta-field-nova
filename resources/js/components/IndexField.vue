@@ -16,12 +16,12 @@ export default {
                     ) >= 0
                 ) {
                     if (value.title) {
-                        return "bg-success";
+                        return "bg-red-500";
                     }
-                    return "bg-warning";
+                    return "bg-yellow-500";
                 }
             }
-            return "bg-danger";
+            return "bg-green-500";
         }
     }
 };

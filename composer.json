@@ -10,12 +10,19 @@
             "email": "andreasgadej@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
     "keywords": [
         "laravel",
         "nova"
     ],
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=7.3.0",
+        "laravel/nova": "^4.0.0"
     },
     "autoload": {
         "psr-4": {

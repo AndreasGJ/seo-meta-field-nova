@@ -1,8 +1,8 @@
 <template>
-    <default-field :field="field" :errors="errors">
-        <template slot="field">
+    <DefaultField :field="field" :errors="errors">
+        <template #field>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Title:</label>
+                <label class="mb-1 block">{{ __('Title') }}:</label>
                 <input
                     :id="field.name + '-title'"
                     type="text"
@@ -10,6 +10,7 @@
                     :class="errorClasses"
                     :placeholder="field.name"
                     v-model="value.title"
+                    @change="setHasChanged"
                     @input="setHasChanged"
                 />
                 <p
@@ -18,7 +19,7 @@
                 >{{ field.title_format.replace(':text', value.title || '') }}</p>
             </div>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Description:</label>
+                <label class="mb-1 block">{{ __('Description') }}:</label>
                 <textarea
                     class="w-full form-control form-input form-input-bordered py-3 h-auto"
                     :id="field.name + '-description'"
@@ -28,7 +29,7 @@
                 />
             </div>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Keywords:</label>
+                <label class="mb-1 block">{{ __('Keywords') }}:</label>
                 <textarea
                     class="w-full form-control form-input form-input-bordered py-3 h-auto"
                     :id="field.name + '-keywords'"
@@ -38,35 +39,35 @@
                 />
             </div>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Follow:</label>
-                <select-control
+                <label class="mb-1 block">{{ __('Follow') }}:</label>
+                <SelectControl
                     :id="field.name + '-follow'"
-                    v-model="value.follow_type"
-                    class="w-full form-control form-select"
+                    :selected="value.follow_type"
+                    class="w-full"
                     :options="followOptions"
-                    @change="setHasChanged"
+                    @change="value.follow_type = $event;setHasChanged();"
                 >
                     <option value selected>
                         {{
-                        __('Choose an option')
+                            __('Choose an option')
                         }}
                     </option>
-                </select-control>
+                </SelectControl>
             </div>
             <div class="form-group mb-3">
-                <label class="mb-1 block">Image:</label>
+                <label class="mb-1 block">{{ __('Image') }}:</label>
                 <seo-media
                     :value="field.image_url"
                     :file="imageFile"
-                    @change="imageFile = $event;setHasChanged($event)"
+                    @imageSelect="uploadImage"
                 ></seo-media>
             </div>
         </template>
-    </default-field>
+    </DefaultField>
 </template>
 
 <script>
-import { FormField, HandlesValidationErrors } from "laravel-nova";
+import {FormField, HandlesValidationErrors} from "laravel-nova";
 
 export default {
     mixins: [FormField, HandlesValidationErrors],
@@ -79,12 +80,13 @@ export default {
         return {
             hasChanged: false,
             imageFile: null,
+            value: this.field.value || {},
             followOptions:
                 field && field.follow_type_options
                     ? Object.keys(field.follow_type_options).map(value => ({
-                          value,
-                          label: field.follow_type_options[value]
-                      }))
+                        value,
+                        label: field.follow_type_options[value]
+                    }))
                     : []
         };
     },
@@ -104,6 +106,7 @@ export default {
                 this.field.attribute,
                 this.value ? JSON.stringify(this.value) : ""
             );
+
             if (this.imageFile) {
                 formData.append(
                     this.field.attribute + "_image",
@@ -124,6 +127,10 @@ export default {
          */
         setHasChanged() {
             this.hasChanged = true;
+        },
+        uploadImage(file) {
+            this.imageFile = file;
+            this.setHasChanged();
         }
     }
 };

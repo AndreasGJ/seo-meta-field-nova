@@ -68,7 +68,7 @@ class SeoMeta extends Field
             'title_format' => $resource->getSeoTitleFormatter()
         ];
         if (!$this->value) {
-            $this->value = (object)[
+            $this->value = [
                 'title' => $resource->getSeoTitleDefault() ?? '',
                 'description' => $resource->getSeoDescriptionDefault() ?? '',
                 'keywords' => $resource->getSeoKeywordsDefault() ?? '',
@@ -78,8 +78,8 @@ class SeoMeta extends Field
             $meta['default_values'] = true;
         }
 
-        if ($this->value && $this->value->image) {
-            $meta['image_url'] = Storage::disk($this->file_disk)->url($this->value->image);
+        if ($this->value && $this->value['image']) {
+            $meta['image_url'] = Storage::disk($this->file_disk)->url($this->value['image']);
         }
         $this->withMeta($meta);
     }
