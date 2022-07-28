@@ -36,6 +36,10 @@ if(!empty($seo['params'])){
     @if(!empty($seo['image_path']))
     <meta property="og:image" content="{{ $seo['image_path'] }}" />
     @endif
+
+    @foreach($seo['params']->canonical_links ?? [] as $link)
+        <link rel="canonical" href="{{ $link }}">
+    @endforeach
 @else
 <meta name="robots" content="{{ !empty($seo['follow_type']) && config('seo.seo_status') ? $seo['follow_type'] : 'noindex, nofollow' }}" />
 @endif

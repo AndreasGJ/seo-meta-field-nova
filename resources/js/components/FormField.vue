@@ -38,6 +38,26 @@
                     @input="setHasChanged"
                 />
             </div>
+            <div class="form-group mb-3" ref="canonicalLinksWrapper">
+                <label class="mb-1 block">{{ __('Canonical link(s)') }}:</label>
+                <div
+                    v-for="(canonicalLink, index) in canonicalLinks"
+                    :key="index"
+                    class="flex"
+                >
+                    <input
+                        type="text"
+                        class="w-full form-control form-input form-input-bordered mb-2 flex-grow"
+                        v-model="canonicalLink.value"
+                        @change="setHasChanged"
+                    />
+                    <DefaultButton @click.prevent="removeCanonicalLink(index)">-</DefaultButton>
+                </div>
+
+                <DefaultButton @click.prevent="addCanonicalLink()">
+                    {{ __('+ Add canonical link') }}
+                </DefaultButton>
+            </div>
             <div class="form-group mb-3">
                 <label class="mb-1 block">{{ __('Follow') }}:</label>
                 <SelectControl
@@ -80,6 +100,11 @@ export default {
         return {
             hasChanged: false,
             imageFile: null,
+            canonicalLinks: field.canonical_links ? field.canonical_links.map(link => {
+                return {
+                    value: link
+                }
+            }) : [],
             value: this.field.value || {},
             followOptions:
                 field && field.follow_type_options
@@ -91,6 +116,26 @@ export default {
         };
     },
     methods: {
+        addCanonicalLink() {
+            this.canonicalLinks.push({
+                value: 'https://'
+            });
+
+            this.$nextTick(() => {
+                const inputs = this.$refs.canonicalLinksWrapper.querySelectorAll('input');
+                if (inputs && inputs.length) {
+                    inputs[inputs.length - 1].focus();
+                }
+            });
+
+            this.setHasChanged();
+        },
+
+        removeCanonicalLink(index) {
+            this.canonicalLinks.splice(index, 1);
+            this.setHasChanged();
+        },
+
         /*
          * Set the initial, internal value for the field.
          */
@@ -102,6 +147,13 @@ export default {
          * Fill the given FormData object with the field's internal value.
          */
         fill(formData) {
+
+            if (!this.value) {
+                this.value = {};
+            }
+
+            this.value.params.canonical_links = this.canonicalLinks.map(link => link.value);
+
             formData.append(
                 this.field.attribute,
                 this.value ? JSON.stringify(this.value) : ""

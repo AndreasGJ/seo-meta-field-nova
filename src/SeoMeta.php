@@ -65,6 +65,7 @@ class SeoMeta extends Field
 
         $meta = [
             'default_values' => false,
+            'canonical_links' => $resource->getCanonicalLinks(),
             'title_format' => $resource->getSeoTitleFormatter()
         ];
         if (!$this->value) {
@@ -156,7 +157,8 @@ class SeoMeta extends Field
                     'keywords'    => $value->keywords ?? null,
                     'follow_type' => $value->follow_type ?? null,
                     'params' => [
-                        'title_format' => $model->getSeoTitleFormatter()
+                        'title_format' => $model->getSeoTitleFormatter(),
+                        'canonical_links' => $value->params->canonical_links ?? []
                     ]
                 ]);
                 $has_change = true;
