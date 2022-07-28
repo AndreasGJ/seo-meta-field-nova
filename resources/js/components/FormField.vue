@@ -152,6 +152,10 @@ export default {
                 this.value = {};
             }
 
+            if(!this.value.params) {
+                this.value.params = {};
+            }
+
             this.value.params.canonical_links = this.canonicalLinks.map(link => link.value);
 
             formData.append(
