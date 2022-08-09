@@ -1,44 +1,50 @@
 <template>
-    <panel-item :field="field">
-        {{ field.name }}
-        <div slot="value" class="seo-meta-detail">
-            <b v-if="!hasSeo">You need some SEO data</b>
-            <button
-                type="button"
-                class="btn btn-primary btn-default"
-                @click="showSeoPreviews = !showSeoPreviews"
-                v-if="hasSeo"
-            >{{ showSeoPreviews ? 'Hide' : 'Show' }} SEO previews</button>
-            <div class="seo-meta-detail__previews" v-if="showSeoPreviews && hasSeo">
-                <div class="seo-meta-detail__wrapper">
-                    <div class="seo-meta-detail__wrapper__label">Google</div>
-                    <div class="seo-meta-detail__wrapper__item seo-meta-detail__google">
-                        <div class="seo-meta-detail__google__title">{{ seoTitle }}</div>
-                        <div
-                            class="seo-meta-detail__google__url"
-                        >{{ (field.url || field.hostname).replace(/:\/\//, ':||').replace(/(\/)/g, ' › ').replace(':||', '://') }}</div>
-                        <div
-                            class="seo-meta-detail__google__description"
-                        >{{ field.value.description }}</div>
-                    </div>
-                </div>
-                <div class="seo-meta-detail__wrapper">
-                    <div class="seo-meta-detail__wrapper__label">Facebook</div>
-                    <div class="seo-meta-detail__wrapper__item seo-meta-detail__facebook">
-                        <div class="seo-meta-detail__facebook__image" v-if="field.image_url">
-                            <img :src="field.image_url" />
-                        </div>
-                        <div class="seo-meta-detail__facebook__info">
+    <PanelItem :field="field">
+        <template #value>
+            {{ field.name }}
+            <div slot="value" class="seo-meta-detail">
+                <b v-if="!hasSeo">{{ __('You need some SEO data') }}</b>
+                <button
+                    type="button"
+                    class="btn btn-primary btn-default"
+                    @click="showSeoPreviews = !showSeoPreviews"
+                    v-if="hasSeo"
+                >{{ showSeoPreviews ? __('Hide') : __('Show') }} {{ __('SEO previews') }}
+                </button>
+                <div class="seo-meta-detail__previews" v-if="showSeoPreviews && hasSeo">
+                    <div class="seo-meta-detail__wrapper">
+                        <div class="seo-meta-detail__wrapper__label">Google</div>
+                        <div class="seo-meta-detail__wrapper__item seo-meta-detail__google">
+                            <div class="seo-meta-detail__google__title">{{ seoTitle }}</div>
                             <div
-                                class="seo-meta-detail__facebook__domain"
-                            >{{ field.hostname.replace(/^https?:\/\//g, '') }}</div>
-                            <div class="seo-meta-detail__facebook__title">{{ seoTitle }}</div>
+                                class="seo-meta-detail__google__url"
+                            >{{ (field.url || field.hostname).replace(/:\/\//, ':||').replace(/(\/)/g, ' › ').replace(':||', '://') }}
+                            </div>
+                            <div
+                                class="seo-meta-detail__google__description"
+                            >{{ field.value.description }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="seo-meta-detail__wrapper">
+                        <div class="seo-meta-detail__wrapper__label">Facebook</div>
+                        <div class="seo-meta-detail__wrapper__item seo-meta-detail__facebook">
+                            <div class="seo-meta-detail__facebook__image" v-if="field.image_url">
+                                <img :src="field.image_url"/>
+                            </div>
+                            <div class="seo-meta-detail__facebook__info">
+                                <div
+                                    class="seo-meta-detail__facebook__domain"
+                                >{{ field.hostname.replace(/^https?:\/\//g, '') }}
+                                </div>
+                                <div class="seo-meta-detail__facebook__title">{{ seoTitle }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </panel-item>
+        </template>
+    </PanelItem>
 </template>
 
 <script>
@@ -76,21 +82,25 @@ export default {
 .seo-meta-detail__previews {
     margin: 30px 0 0;
 }
+
 .seo-meta-detail__wrapper {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin: 0 0 15px 0;
 }
+
 .seo-meta-detail__wrapper__label {
     padding-right: 15px;
     font-weight: bold;
     width: 120px;
 }
+
 .seo-meta-detail__wrapper__item {
     max-width: 500px;
     flex-grow: 1;
 }
+
 .seo-meta-detail__google {
     border: 1px solid #ebebeb;
     background: #fff;
@@ -106,6 +116,7 @@ export default {
         line-height: 1.3;
         color: #1a0dab;
     }
+
     &__url {
         font-size: 16px;
         padding-top: 1px;
@@ -131,9 +142,11 @@ export default {
             width: 100%;
         }
     }
+
     &__info {
         padding: 10px 12px;
     }
+
     &__title {
         font-size: 16px;
         line-height: 20px;
@@ -141,6 +154,7 @@ export default {
         color: #1d2129;
         padding: 5px 0;
     }
+
     &__domain {
         color: #606770;
         font-size: 12px;

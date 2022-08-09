@@ -65,10 +65,11 @@ class SeoMeta extends Field
 
         $meta = [
             'default_values' => false,
+            'canonical_links' => $resource->getCanonicalLinks(),
             'title_format' => $resource->getSeoTitleFormatter()
         ];
         if (!$this->value) {
-            $this->value = (object)[
+            $this->value = [
                 'title' => $resource->getSeoTitleDefault() ?? '',
                 'description' => $resource->getSeoDescriptionDefault() ?? '',
                 'keywords' => $resource->getSeoKeywordsDefault() ?? '',
@@ -78,8 +79,8 @@ class SeoMeta extends Field
             $meta['default_values'] = true;
         }
 
-        if ($this->value && $this->value->image) {
-            $meta['image_url'] = Storage::disk($this->file_disk)->url($this->value->image);
+        if ($this->value && $this->value['image']) {
+            $meta['image_url'] = Storage::disk($this->file_disk)->url($this->value['image']);
         }
         $this->withMeta($meta);
     }
@@ -156,7 +157,8 @@ class SeoMeta extends Field
                     'keywords'    => $value->keywords ?? null,
                     'follow_type' => $value->follow_type ?? null,
                     'params' => [
-                        'title_format' => $model->getSeoTitleFormatter()
+                        'title_format' => $model->getSeoTitleFormatter(),
+                        'canonical_links' => $value->params->canonical_links ?? []
                     ]
                 ]);
                 $has_change = true;

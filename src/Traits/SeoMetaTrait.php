@@ -118,4 +118,9 @@ trait SeoMetaTrait
     {
         return config('seo.default_follow_type');
     }
+
+    public function getCanonicalLinks(): array
+    {
+        return $this->seo_meta->params->canonical_links ?? [];
+    }
 }

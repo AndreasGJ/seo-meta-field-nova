@@ -1,7 +1,12 @@
-Nova.booting((Vue, router, store) => {
-    Vue.component("seo-media", require("./partials/SeoMedia.vue").default);
+import SeoMedia from "./partials/SeoMedia";
+import IndexField from "./components/IndexField";
+import DetailField from "./components/DetailField";
+import FormField from "./components/FormField";
 
-    Vue.component('index-seo-meta', require('./components/IndexField.vue').default)
-    Vue.component('detail-seo-meta', require('./components/DetailField.vue').default)
-    Vue.component('form-seo-meta', require('./components/FormField.vue').default)
+Nova.booting((Vue) => {
+    Vue.component("seo-media", SeoMedia);
+
+    Vue.component('index-seo-meta', IndexField)
+    Vue.component('detail-seo-meta', DetailField)
+    Vue.component('form-seo-meta', FormField)
 })
