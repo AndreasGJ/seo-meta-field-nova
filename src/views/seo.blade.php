@@ -1,22 +1,21 @@
 @php
-if (isset($page) && $page && method_exists($page, 'getSeoMeta')) {
-    $seo = $page->getSeoMeta();
-} elseif (isset($seo) && $seo && is_array($seo) && isset($seo['title'])) {
-    $seo = $seo;
-} else {
-    $seo = [
-        'title' => config('app.name', 'Laravel'),
-        'description' => null,
-        'keywords' => null
-    ];
-}
-
-if(!empty($seo['params'])){
-    if(!empty($seo['params']->title_format)){
-        $seo['title'] = str_replace(':text', $seo['title'], $seo['params']->title_format);
+    if (isset($page) && $page && method_exists($page, 'getSeoMeta')) {
+        $seo = $page->buildSeoForCurrentLocale();
+    } elseif (isset($seo) && $seo && is_array($seo) && isset($seo['title'])) {
+        $seo = $seo;
+    } else {
+        $seo = [
+            'title' => config('seo.default_seo_title'),
+            'description' => config('seo.default_seo_description'),
+            'keywords' => config('seo.default_seo_keywords')
+        ];
     }
+    if(!empty($seo['params'])){
+        if(!empty($seo['params']->title_format)){
+            $seo['title'] = str_replace(':text', $seo['title'], $seo['params']->title_format);
+        }
 
-}
+    }
 @endphp
 
 <title>{{ $seo['title'] }}</title>

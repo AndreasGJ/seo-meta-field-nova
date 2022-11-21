@@ -48,6 +48,7 @@ class SeoMeta extends Field
             'hostname'     => url(''),
             'title_format' => config('seo.title_formatter'),
             'follow_type_options' => config('seo.follow_type_options'),
+            'available_locales'=>config('seo.available_locales')
         ]);
         $this->hideWhenCreating();
     }
@@ -62,16 +63,15 @@ class SeoMeta extends Field
     public function resolve($resource, $attribute = null)
     {
         parent::resolve($resource, $attribute);
-
         $meta = [
             'default_values' => false,
             'title_format' => $resource->getSeoTitleFormatter()
         ];
         if (!$this->value) {
             $this->value = (object)[
-                'title' => $resource->getSeoTitleDefault() ?? '',
-                'description' => $resource->getSeoDescriptionDefault() ?? '',
-                'keywords' => $resource->getSeoKeywordsDefault() ?? '',
+                'title' => (object) $resource->getSeoTitleDefault() ,
+                'description' => (object) $resource->getSeoDescriptionDefault() ,
+                'keywords' => (object) $resource->getSeoKeywordsDefault() ,
                 'image' => $resource->getSeoImageDefault(),
                 'follow_type' => $resource->getSeoFollowDefault()
             ];
@@ -140,7 +140,6 @@ class SeoMeta extends Field
     {
         $has_change = false;
         $relationship = $model->{$attribute} ?? new SeoMetaItem;
-
         if($model->id){
             if(!$relationship->seo_metaable_type){
                 $relationship->seo_metaable_type = get_class($model);

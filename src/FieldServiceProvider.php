@@ -25,6 +25,7 @@ class FieldServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->publishes([
             __DIR__ . '/configs/seo.php' => config_path('seo.php'),
+            __DIR__ . '/migrations' => database_path('migrations'),
         ]);
     }
 
