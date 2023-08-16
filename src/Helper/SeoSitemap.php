@@ -47,7 +47,7 @@ class SeoSitemap {
                 $this->items = array_merge($this->items, $items->map(function($item){
                     return (object)[
                         'url'     => $item->getSitemapItemUrl(),
-                        'lastmod' => $item->getSitemapItemLastModified(),
+                        'lastmod' => $item->getSitemapItemLastModified()->format('c'),
                     ];
                 })->toArray());
             }
